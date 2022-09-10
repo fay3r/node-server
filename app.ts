@@ -1,22 +1,27 @@
-import express, {Request, Response} from 'express';
-import {logger} from "./middleware/add";
-import {mathRouter} from "./routes/math";
+import express, { Request, Response } from 'express';
+import { logger } from './middleware/add';
+import { mathRouter } from './routes/math';
+import { bookRouter } from './routes/books';
 
 const app = express();
 
-app.use(express.json())
-app.use('/', logger)
+// middleware
+app.use(express.json());
+app.use('/', logger);
 
-app.use('/math', mathRouter)
+// routes
+app.use('/math', mathRouter);
+app.use('/books', bookRouter);
 
 app.get('/', (req: Request, res: Response) => {
-    res.send(`<p>Its working</p>`)
-})
+  res.send(`<p>Its working</p>`);
+});
 
+// not found
 app.get('*', (req, res) => {
-    res.send(`<h1>Not found</h1>`)
-})
+  res.status(404).send(`<h1>Not found</h1>`);
+});
 
 app.listen(8000, () => {
-    console.info(`[server]: listening on http://localhost:8000`)
-})
+  console.info(`[server]: listening on http://localhost:8000`);
+});
